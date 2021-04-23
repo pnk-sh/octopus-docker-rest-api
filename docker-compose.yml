@@ -6,14 +6,12 @@ services:
       context: .
       dockerfile: .docker/Dockerfile
     ports:
-      - "3000:3000"
+      - "5000:5000"
 
     environment:
-      NODE_ENV: production
-
-      STORAGE_TYPE: mongodb
       MONGO_URI: 
       DEBUG_MODE: 1
+      DOCKER_DEAMON_BASE_URI: unix://var/run/docker.sock
       
     volumes:
       - //var/run/docker.sock:/var/run/docker.sock
