@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  service-agent:
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
+    ports:
+      - "3000:3000"
+
+    environment:
+      NODE_ENV: production
+
+      STORAGE_TYPE: mongodb
+      MONGO_URI: 
+      DEBUG_MODE: 1
+      
+    volumes:
+      - //var/run/docker.sock:/var/run/docker.sock

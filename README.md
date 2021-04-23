@@ -1,1 +1,1 @@
-# octopus-docker-rest-api
+# Octopus Docker Rest API
