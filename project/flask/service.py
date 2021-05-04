@@ -58,7 +58,8 @@ class DockerServiceController:
                 '_id': 0,
                 'ID': 1,
                 'ClusterID': 1,
-                'Name': '$Spec.Name'
+                'Name': '$Spec.Name',
+                'Image': '$Spec.TaskTemplate.ContainerSpec.Image'
             }
         }])
 
