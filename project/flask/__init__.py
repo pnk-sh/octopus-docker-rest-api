@@ -21,6 +21,7 @@ def create_app(config_filename=None, instance_relative_config=True):
     app.wsgi_app = DBConnect(app.wsgi_app)
 
     app.add_url_rule('/info', view_func=DockerController.getInfo, endpoint='get_info', methods=['GET'])
+    app.add_url_rule('/service', view_func=DockerServiceController.get_all, endpoint='get_all_service', methods=['GET'])
     app.add_url_rule('/service/<service_id>/update', view_func=DockerServiceController.update, endpoint='get_service_update_post', methods=['POST'])
 
     return app

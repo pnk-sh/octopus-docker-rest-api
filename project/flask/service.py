@@ -4,6 +4,8 @@ import docker
 from flask import Response, request
 from bson.json_util import dumps, loads
 
+from project.odm.services import Services as OdmServices
+
 class DockerServiceController:
     @staticmethod
     def update(service_id: str):
@@ -36,4 +38,30 @@ class DockerServiceController:
                 'warnings': resp
             }), mimetype='text/json'), 401
 
-        
+    @staticmethod
+    def get_all():
+        service_filter = {}
+
+        if (request.args.get('autodeploy')):
+            service_filter['Spec.Labels.webhook_autodeploy'] = request.args.get('autodeploy')
+
+        if (request.args.get('tag')):
+            service_filter['Spec.Labels.webhook_tag'] = request.args.get('tag')
+
+        if (request.args.get('identifier')):
+            service_filter['Spec.Labels.webhook_identifier'] = request.args.get('identifier')
+
+        row = OdmServices.objects.aggregate([{
+            '$match': service_filter
+        }, {
+            '$project': {
+                '_id': 0,
+                'ID': 1,
+                'ClusterID': 1,
+                'Name': '$Spec.Name'
+            }
+        }])
+
+        return Response(dumps({
+            'services': row
+        }), mimetype='text/json'), 200
