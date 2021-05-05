@@ -23,6 +23,10 @@ class DockerServiceController:
             return Response(dumps({
                 'errors': [100]
             }), mimetype='text/json'), 417
+    
+        image_name_slice = image_name.split(':')
+        if len(image_name_slice) > 1:
+            image_name = image_name_slice[0]
 
         image = client.images.pull(repository=image_name, tag=image_tag)
 
