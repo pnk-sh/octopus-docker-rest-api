@@ -10,6 +10,10 @@ class DockerServiceController:
     @staticmethod
     def update(service_id: str):
         client = docker.DockerClient(base_url=os.getenv('DOCKER_DEAMON_BASE_URI'))
+        client.login(
+            username=os.getenv('DOCKER_REGISTRY_USERNAME'),
+            password=os.getenv('DOCKER_REGISTRY_PASSWORD'),
+        )
         json_data = request.get_json()
 
         image_name = json_data.get('image')
