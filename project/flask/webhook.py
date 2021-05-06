@@ -26,6 +26,9 @@ class WebhookController:
                 if data.get('service_update_failed'):
                     fields_to_update['service_update_failed'] = webhook[0].service_update_failed + int(data.get('service_update_failed'))
 
+                if data.get('status'):
+                    fields_to_update['status'] = data.get('status')
+
                 webhook.update(**fields_to_update)
 
                 if webhook[0].service_update_pending <= (webhook[0].service_update_processed + webhook[0].service_update_failed):
