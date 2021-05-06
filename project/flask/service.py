@@ -47,7 +47,7 @@ class DockerServiceController:
             }), mimetype='text/json'), 401
 
     @staticmethod
-    def get_all():
+    def getAll():
         service_filter = {}
 
         if (request.args.get('autodeploy')):

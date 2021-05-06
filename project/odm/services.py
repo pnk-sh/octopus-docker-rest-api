@@ -1,6 +1,5 @@
   
-from mongoengine import Document, EmailField, StringField, ListField, BooleanField
-from mongoengine.base.fields import ObjectIdField
+from mongoengine import Document, StringField
 from mongoengine.document import EmbeddedDocument
 from mongoengine.fields import EmbeddedDocumentField
 
