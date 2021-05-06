@@ -1,4 +1,5 @@
 import os
+from project.flask.webhook import WebhookController
 from project.flask.logging import LoggingController
 import dotenv
 from flask import Flask
@@ -26,5 +27,6 @@ def create_app(config_filename=None, instance_relative_config=True):
     app.add_url_rule('/service/<service_id>/update', view_func=DockerServiceController.update, endpoint='get_service_update_post', methods=['POST'])
     app.add_url_rule('/logging', view_func=LoggingController.getAll, endpoint='get_all_logging', methods=['GET'])
     app.add_url_rule('/logging', view_func=LoggingController.insert, endpoint='insert_logging', methods=['POST'])
+    app.add_url_rule('/webhook/<webhook_id>', view_func=WebhookController.update, endpoint='update_webhook', methods=['POST'])
 
     return app
