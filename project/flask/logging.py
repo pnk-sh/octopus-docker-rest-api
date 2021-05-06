@@ -1,6 +1,6 @@
-from logging import log
+import os
+import docker
 from datetime import datetime
-import logging
 from flask import Response, request
 from bson.json_util import dumps, loads
 
@@ -34,8 +34,11 @@ class LoggingController:
 
         created_at_format = data.get('created_at_format', '%Y-%m-%d %H:%M:%S.%f')
 
+        client = docker.DockerClient(base_url=os.getenv('DOCKER_DEAMON_BASE_URI'))
+        docker_info = client.info()
+
         logging = OdmLogging()
-        logging.cluster_id = 'custom-id'
+        logging.cluster_id = docker_info['Swarm']['Cluster']['ID']
         logging.binds = data.get('binds', [])
         logging.data = OdmLoggingData()
         logging.data.summary = data.get('summary')
