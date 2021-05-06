@@ -32,7 +32,7 @@ class LoggingController:
     def insert():
         data = request.get_json()
 
-        created_at_format = data.get('created_at_format', '%Y-%m-%d %H:%M:%S')
+        created_at_format = data.get('created_at_format', '%Y-%m-%d %H:%M:%S.%f')
 
         logging = OdmLogging()
         logging.cluster_id = 'custom-id'
