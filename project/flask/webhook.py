@@ -14,9 +14,9 @@ class WebhookController:
             webhook = OdmWebhook.objects(pk=webhook_id)
             if len(webhook) > 0:
                 logging_binds = [
-                    f'webook_id-{str(webhook[0].pk)}',
-                    f'webook_number-{webhook[0].number}',
-                    f'webook_identifier-{webhook[0].identifier}',
+                    f'webhook_id-{str(webhook[0].pk)}',
+                    f'webhook_number-{webhook[0].number}',
+                    f'webhook_identifier-{webhook[0].identifier}',
                 ]
                 logging_level = 'info'
                 logging_description = []
