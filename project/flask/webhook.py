@@ -36,14 +36,14 @@ class WebhookController:
                     before_service_update_processed_count = webhook[0].service_update_processed
                     service_update_processed_count = webhook[0].service_update_processed + int(data.get('service_update_processed'))
 
-                    fields_to_update['service_update_processed'] = service_update_processed_count
+                    fields_to_update['inc__service_update_processed'] = int(data.get('service_update_processed'))
                     logging_description.append(f'Service update processed {before_service_update_processed_count} → {service_update_processed_count}')
 
                 if data.get('service_update_failed'):
                     before_service_update_failed_count = webhook[0].service_update_failed
                     service_update_failed_count = webhook[0].service_update_failed + int(data.get('service_update_failed'))
 
-                    fields_to_update['service_update_failed'] = service_update_failed_count
+                    fields_to_update['inc__service_update_failed'] = int(data.get('service_update_failed'))
                     logging_description.append(f'Service update failed {before_service_update_failed_count} → {service_update_failed_count}')
 
                 if data.get('status') and webhook[0].status != data.get('status'):

@@ -1,5 +1,8 @@
 import os
 import logging
+from project.models.webhook import update_webhook
+from project.flask.webhook import WebhookController
+from project.models.logging import insert_logging
 import docker
 from flask import Response, request
 from bson.json_util import dumps, loads
@@ -18,6 +21,7 @@ class DockerServiceController:
 
         image_name = json_data.get('image')
         image_tag = json_data.get('tag', 'latest')
+        webook_id = json_data.get('webook_id')
 
         if image_name is None:
             return Response(dumps({
@@ -35,7 +39,31 @@ class DockerServiceController:
         
         if (resp['Warnings'] is None):
             service = client.services.get(service_id=service_id)
-            service.force_update()
+            logging_level = 'info'
+            logging_event = 'success'
+
+            if service.force_update():
+                update_webhook(webook_id=webook_id, body={
+                    'service_update_processed': 1
+                })
+            else:
+                logging_level = 'error'
+                logging_event = 'failed'
+                update_webhook(webook_id=webook_id, body={
+                    'service_update_failed': 1
+                })
+
+            insert_logging(
+                summary='Service deployed success',
+                description=f'Service-id: {service_id} is now {logging_event} deployed with image {image_name}:{image_tag}',
+                level=logging_level,
+                binds=[
+                    f'service_id-{service_id}',
+                    f'webook_id-{webook_id}',
+                    f'image_name-{image_name}',
+                    f'image_tag-{image_tag}',
+                ],
+            )
 
             return Response(dumps({
                 'service_id': service_id
