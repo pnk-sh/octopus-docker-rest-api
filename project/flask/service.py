@@ -21,7 +21,7 @@ class DockerServiceController:
 
         image_name = json_data.get('image')
         image_tag = json_data.get('tag', 'latest')
-        webook_id = json_data.get('webook_id')
+        webhook_id = json_data.get('webhook_id')
 
         if image_name is None:
             return Response(dumps({
@@ -43,13 +43,13 @@ class DockerServiceController:
             logging_event = 'success'
 
             if service.force_update():
-                update_webhook(webook_id=webook_id, body={
+                update_webhook(webhook_id=webhook_id, body={
                     'service_update_processed': 1
                 })
             else:
                 logging_level = 'error'
                 logging_event = 'failed'
-                update_webhook(webook_id=webook_id, body={
+                update_webhook(webhook_id=webhook_id, body={
                     'service_update_failed': 1
                 })
 
@@ -59,7 +59,7 @@ class DockerServiceController:
                 level=logging_level,
                 binds=[
                     f'service_id-{service_id}',
-                    f'webook_id-{webook_id}',
+                    f'webhook_id-{webhook_id}',
                     f'image_name-{image_name}',
                     f'image_tag-{image_tag}',
                 ],
